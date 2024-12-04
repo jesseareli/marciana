@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seguimiento de Pedido</title>
+  <link rel="stylesheet" href="estyle.css">
+  <style>
+    .custom-button {
+      background-color: #543020;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .custom-button:hover {
+      background-color: #402416;
+    }
+  </style>
+</head>
+<body>
+  <h1>Panadería Marcianas - Seguimiento del Pedido</h1>
+  <div class="container">
+    <p>Cualquier duda de su pedido mandar mensaje a este numero 6644513127</p>
+    <div id="orderStatus" class="status">
+      <!-- Estado del pedido se actualiza dinámicamente -->
+
+    </div>
+    <button id="updateStatus" class="custom-button">Actualizar Estado</button>
+    <a href="index.html" class="custom-button">Volver a la Tienda</a>
+  </div>
+<script>
+  // Obtener fecha y hora de entrega desde localStorage
+const deliveryDateStr = localStorage.getItem("deliveryDate");
+const deliveryTimeStr = localStorage.getItem("deliveryTime");
+
+// Validar existencia de datos
+if (!deliveryDateStr || !deliveryTimeStr) {
+  alert("No hay datos del pedido. Regresa a la tienda.");
+  window.location.href = "index.html";
+}
+
+// Convertir hora AM/PM a formato 24 horas
+function convertTimeTo24Hour(time) {
+  const [hour, minutePart] = time.split(":");
+  const minute = minutePart.slice(0, 2);
+  const period = minutePart.slice(2).trim().toLowerCase();
+  let hour24 = parseInt(hour, 10);
+  if (period === "pm" && hour24 !== 12) hour24 += 12;
+  if (period === "am" && hour24 === 12) hour24 = 0;
+  return `${hour24.toString().padStart(2, "0")}:${minute}`;
+}
+
+// Crear un objeto `Date` para la fecha y hora de entrega
+const deliveryDateTime = new Date(`${deliveryDateStr}T${convertTimeTo24Hour(deliveryTimeStr)}`);
+const now = new Date();
+
+// Calcular el estado del pedido basado en la fecha y hora actuales
+function getOrderStatus() {
+  if (now < deliveryDateTime) {
+    return "Pendiente";
+  } else if (now.toDateString() === deliveryDateTime.toDateString() && now < deliveryDateTime) {
+    return "En camino";
+  } else {
+    return "Entregado";
+  }
+}
+
+// Mostrar el estado del pedido
+function renderOrderStatus() {
+  const status = getOrderStatus();
+  const orderStatusDiv = document.getElementById("orderStatus");
+
+  orderStatusDiv.innerHTML = `
+    <h2>Estado del Pedido:</h2>
+    <p class="${status.replace(" ", "-").toLowerCase()}">${status}</p>
+  `;
+
+  // Guardar el estado en localStorage (opcional)
+  localStorage.setItem("orderStatus", status);
+}
+
+// Inicializar estado al cargar la página
+renderOrderStatus();
+
+// Actualizar el estado manualmente al hacer clic en el botón
+document.getElementById("updateStatus").addEventListener("click", renderOrderStatus);
+</script>
+
+
+</body>
+</html>

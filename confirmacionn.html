@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirmación</title>
+  <link rel="stylesheet" href="estyle.css">
+  <style>
+    .action-button {
+      display: inline-block;
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      color: #fff;
+      background-color: #543020;
+      border: none;
+      border-radius: 5px;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .action-button:hover {
+      background-color: #543020;
+    }
+  </style>
+  <center>
+</head>
+<body>
+  <h1>¡Gracias por tu compra!</h1>
+  <div class="container">
+    <div id="orderConfirmation" class="summary"></div>
+    <p>Recibirás un correo cuando ya sea la fecha de entrega del pedido.</p>
+    <button class="action-button" onclick="window.location.href='index.html'">Volver a la Tienda</button>
+    <button class="action-button" onclick="window.location.href='seguir.html'">Seguir mi pedido</button>
+    <h1>¡Gracias por tu pedido!</h1>
+  </div>
+ </center>
+<script>
+  // Obtener fecha y hora desde localStorage
+const deliveryDate = localStorage.getItem("deliveryDate");
+const deliveryTime = localStorage.getItem("deliveryTime");
+
+if (!deliveryDate || !deliveryTime) {
+  alert("No hay datos del pedido. Regresa a la tienda.");
+  window.location.href = "index.html";
+}
+
+// Mostrar confirmación de la fecha y hora de entrega
+const confirmationDiv = document.getElementById("orderConfirmation");
+confirmationDiv.innerHTML = `
+  <h3>Detalles de la Entrega</h3>
+  <p><strong>Fecha:</strong> ${deliveryDate}</p>
+  <p><strong>Hora:</strong> ${deliveryTime}</p>
+`;
+</script>
+
+</body>
+</html>

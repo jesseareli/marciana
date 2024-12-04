@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Programar Entrega</title>
+  <link rel="stylesheet" href="estyle.css">
+</head>
+<body>
+  <h1>Panadería Marcianas - Entrega</h1>
+  <div class="container">
+    <div id="orderSummary" class="summary"></div>
+    <form id="deliveryForm" action="confirmacionn.html" method="POST">
+      <div class="form-group">
+        <label for="fecha">Fecha de Entrega:</label>
+        <input type="date" id="fecha" name="fecha" required>
+      </div>
+      <div class="form-group">
+        <label for="hora">Hora de Entrega:</label>
+        <select id="hora" name="hora" required>
+          <option value="1:00pm">1:00pm</option>
+          <option value="2:00pm">2:00pm</option>
+          <option value="3:00pm">3:00pm</option>
+          <option value="4:00pm">4:00pm</option>
+          <option value="5:00pm">5:00pm</option>
+          <option value="6:00pm">6:00pm</option>
+          <option value="7:00pm">7:00pm</option>
+        </select>
+      </div>
+      <input type="hidden" id="orderDetails" name="orderDetails">
+      <button type="submit" class="purchase-button">Confirmar Entrega</button>
+    </form>
+  </div>
+
+  <script>
+  document.getElementById("deliveryForm").addEventListener("submit", (e) => {
+  e.preventDefault(); // Prevenir el envío inmediato del formulario
+
+  // Obtener valores de fecha y hora
+  const fechaEntrega = document.getElementById("fecha").value;
+  const horaEntrega = document.getElementById("hora").value;
+
+  // Validar que se hayan seleccionado
+  if (!fechaEntrega || !horaEntrega) {
+    alert("Por favor selecciona una fecha y hora de entrega.");
+    return;
+  }
+
+  // Guardar fecha y hora en localStorage
+  localStorage.setItem("deliveryDate", fechaEntrega);
+  localStorage.setItem("deliveryTime", horaEntrega);
+
+  // Redirigir a la página de confirmación
+  window.location.href = "confirmacionn.html";
+});
+</script>
+
+</body>
+</html>

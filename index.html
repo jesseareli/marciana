@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú con Botones</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Estilo para el botón pequeño en la esquina inferior izquierda */
+        .floating-button {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+            font-size: 18px;
+        }
+
+        .floating-button:hover {
+            background-color: #45a049;
+        }
+
+        /* Mensaje emergente */
+        #popupMessage {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+            font-size: 18px;
+            z-index: 1000;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        #popupMessage button {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #popupMessage button:hover {
+            background-color: #d32f2f;
+        }
+
+        /* Estilos para el sistema de calificación */
+        .rating {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .rating input {
+            display: none;
+        }
+
+        .rating label {
+            font-size: 30px;
+            color: #ccc;
+            cursor: pointer;
+        }
+
+        .rating input:checked ~ label {
+            color: #f4c150; /* Color dorado cuando está seleccionado */
+        }
+
+        .rating label:hover,
+        .rating label:hover ~ label {
+            color: #f4c150; /* Color dorado al pasar el mouse */
+        }
+
+        /* Ajuste para alinear "Califica esta app" a la izquierda y hacerlo horizontal */
+        .rating-container {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .rating-container p {
+            margin: 0;
+            font-size: 20px;
+            color: black;
+            white-space: nowrap; /* Evita que el texto se parta en varias líneas */
+        }
+
+        /* Estilo para el mensaje de agradecimiento */
+        #thank-you-message {
+            display: none;
+            color: white;
+            font-size: 20px;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>¡Panadería Marcianas!</h1>
+
+    <!-- Sección de imagen y texto -->
+    <div class="texto-imagen">
+        <img src="pan1.jpeg" alt="Imagen de un pan redondo" class="img-redonda">
+        <div class="texto">
+            <p>
+                Disfruta de nuestra panadería en línea:<br>
+                Panes frescos, Pasteles y bebidas perfectas.<br>
+                Descubre artículos irresistibles y haz tus compras súper fácil.
+            </p>
+        </div>
+    </div>
+
+    <!-- Contenedor de los botones -->
+    <div class="container">
+        <button class="button" onclick="goToPage('pan.html')" aria-label="Ir a la sección de Panes">
+            <img src="px.JPG" alt="Panes">
+        </button>
+        <button class="button" onclick="goToPage('pastel.html')" aria-label="Ir a la sección de Pasteles">
+            <img src="p.JPG" alt="Pasteles">
+        </button>
+        <button class="button" onclick="goToPage('bebidas.html')" aria-label="Ir a la sección de Bebidas">
+            <img src="b.JPG" alt="Bebidas">
+        </button>
+        <button class="button" onclick="goToPage('cumple.html')" aria-label="Ir a la sección de Cumpleaños">
+            <img src="cumple.jpg" alt="Cumpleaños">
+        </button>
+
+    </div>
+    <div><button class="button" onclick="goToPage('compragran.html')" aria-label="Ir a la sección de Cumpleaños">
+            <img src="nueva.jpg" alt="Cumpleaños">
+        </button></div>
+
+    <!-- Sistema de calificación -->
+    <div class="rating-container">
+        <p>¡Califica esta app!</p>
+        <div class="rating">
+            <input type="radio" name="rating" id="star5" value="5">
+            <label for="star5">&#9733;</label>
+            <input type="radio" name="rating" id="star4" value="4">
+            <label for="star4">&#9733;</label>
+            <input type="radio" name="rating" id="star3" value="3">
+            <label for="star3">&#9733;</label>
+            <input type="radio" name="rating" id="star2" value="2">
+            <label for="star2">&#9733;</label>
+            <input type="radio" name="rating" id="star1" value="1">
+            <label for="star1">&#9733;</label>
+        </div>
+    </div>
+
+    <!-- Mensaje de agradecimiento -->
+    <div id="thank-you-message">
+        ¡Gracias por tu calificación!
+    </div>
+
+    <!-- Botón flotante -->
+    <button class="floating-button" onclick="showPopup()">?</button>
+
+    <!-- Mensaje emergente -->
+    <div id="popupMessage">
+        <p><strong>¿Tienes dudas?</strong></p>
+        <p>Contáctanos:</p>
+        <p>Email: <a href="mailto:contacto@panaderiamarcianas.com" style="color: #4CAF50;">contacto@panaderiamarcianas.com</a></p>
+        <p>Teléfono: <a href="tel:+123456789" style="color: #4CAF50;">+123 456 789</a></p>
+        <p>WhatsApp: <a href="https://wa.me/123456789" target="_blank" style="color: #4CAF50;">+123 456 789</a></p>
+        <button onclick="closePopup()">Cerrar</button>
+    </div>
+
+    <script>
+        // Función para redirigir a una página específica
+        function goToPage(url) {
+            window.location.href = url;
+        }
+
+        // Función para mostrar el mensaje emergente
+        function showPopup() {
+            document.getElementById('popupMessage').style.display = 'block';
+        }
+
+        // Función para cerrar el mensaje emergente
+        function closePopup() {
+            document.getElementById('popupMessage').style.display = 'none';
+        }
+
+        // Sistema de calificación: mostrar mensaje de agradecimiento solo al calificar
+        const stars = document.querySelectorAll('.rating input');
+        const thankYouMessage = document.getElementById('thank-you-message');
+
+        // Inicialmente el mensaje está oculto
+        thankYouMessage.style.display = 'none';
+
+        stars.forEach(star => {
+            star.addEventListener('change', () => {
+                // Mostrar el mensaje solo cuando una estrella haya sido seleccionada
+                thankYouMessage.style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>

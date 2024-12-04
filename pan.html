@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panadería Online</title>
+  <link rel="stylesheet" href="estilo.css">
+  <style>
+    /* Estilo para el resumen y el botón de compra */
+    .summary {
+      background-color: #f4f4f4;
+      padding: 20px;
+      width: 100%;
+      text-align: center;
+      margin-top: auto; /* Esto asegura que el resumen se quede al final */
+    }
+
+    .summary h3 {
+      margin-bottom: 10px;
+    }
+
+    .summary .total {
+      font-size: 18px;
+      margin-top: 10px;
+    }
+
+    .summary .purchase-button {
+      background-color: #543020;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      margin-top: 20px;
+      font-size: 16px;
+    }
+
+    .summary .purchase-button:hover {
+      background-color: #543020;
+    }
+  </style>
+</head>
+<body>
+  <h1>Panes</h1>
+  <div class="container">
+    <!-- Productos existentes -->
+    <div class="product">
+      <img src="bir.JPG" alt="Bolillo">
+      <div class="product-details">
+        <p class="product-name">Bolillo</p>
+        <p class="product-price">$13.00</p>
+      </div>
+      <div class="product-quantity">
+        <label for="Bolillo">Cantidad:</label>
+        <input id="Bolillo" type="number" class="quantity-input" data-name="Bolillo" data-price="13.0" min="0" value="0">
+      </div>
+    </div>
+
+    <div class="product">
+      <img src="concha.JPG" alt="Pan de concha">
+      <div class="product-details">
+        <p class="product-name">Pan de Concha</p>
+        <p class="product-price">$11.00</p>
+      </div>
+      <div class="product-quantity">
+        <label for="Cuernito">Cantidad:</label>
+        <input id="Cuernito" type="number" class="quantity-input" data-name="Cuernito" data-price="11.0" min="0" value="0">
+      </div>
+    </div>
+
+    <div class="product">
+      <img src="man.JPG" alt="Mantecadas">
+      <div class="product-details">
+        <p class="product-name">Mantecadas</p>
+        <p class="product-price">$10.00</p>
+      </div>
+      <div class="product-quantity">
+        <label for="Mantecadas">Cantidad:</label>
+        <input id="Mantecadas" type="number" class="quantity-input" data-name="Mantecadas" data-price="10.0" min="0" value="0">
+      </div>
+    </div>
+
+    <div class="product">
+      <img src="ore.JPG" alt="Pan de Oreja">
+      <div class="product-details">
+        <p class="product-name">Pan de Oreja</p>
+        <p class="product-price">$12.00</p>
+      </div>
+      <div class="product-quantity">
+        <label for="pan-de-oreja">Cantidad:</label>
+        <input id="pan-de-oreja" type="number" class="quantity-input" data-name="Pan de Oreja" data-price="12.0" min="0" value="0">
+      </div>
+    </div>
+
+    <div class="product">
+      <img src="mu.JPG" alt="Pan de Muerto">
+      <div class="product-details">
+        <p class="product-name">Pan de Muerto</p>
+        <p class="product-price">$12.00</p>
+      </div>
+      <div class="product-quantity">
+        <label for="Pan-de-Muerto">Cantidad:</label>
+        <input id="Pan-de-Muerto" type="number" class="quantity-input" data-name="Pan de Muerto" data-price="12.0" min="0" value="0">
+      </div>
+    </div>
+
+    <div class="product">
+      <img src="cro.JPG" alt="Pan de Cuernito">
+      <div class="product-details">
+        <p class="product-name">Pan de Cuernito</p>
+        <p class="product-price">$12.00</p>
+      </div>
+      <div class="product-quantity">
+        <label for="pan-Cuernito">Cantidad:</label>
+        <input id="pan-Cuernito" type="number" class="quantity-input" data-name="Pan de Cuernito" data-price="12.0" min="0" value="0">
+      </div>
+    </div>
+  </div>
+
+  <!-- Resumen y botón de compra -->
+  <div class="summary">
+    <h3>Resumen</h3>
+    <ul id="selectedList"></ul>
+    <div class="total">
+      <p>Subtotal: $0.00</p>
+      <p>IVA (16%): $0.00</p>
+      <strong>Total: $0.00</strong>
+    </div><br>
+    <button class="purchase-button" id="purchaseButton">Comprar Ahora</button>
+  </div>
+
+  <script>
+    // Selección de elementos
+    const quantities = document.querySelectorAll('.quantity-input');
+    const totalElement = document.querySelector('.total');
+    const selectedList = document.getElementById('selectedList');
+    const purchaseButton = document.getElementById('purchaseButton');
+
+    // Actualización del resumen al cambiar cantidad de productos
+    quantities.forEach(quantity => {
+      quantity.addEventListener('input', updateSelection);
+    });
+
+    function updateSelection() {
+      const ivaRate = 0.16; // Tasa del IVA
+      let subtotal = 0;
+      selectedList.innerHTML = ''; // Limpiar la lista
+
+      quantities.forEach(quantity => {
+        const price = parseFloat(quantity.dataset.price);
+        const name = quantity.dataset.name;
+        const count = parseInt(quantity.value) || 0;
+
+        if (count > 0) {
+          const itemTotal = price * count;
+          subtotal += itemTotal;
+          const listItem = document.createElement('li');
+          listItem.textContent = `${name} x${count} - $${itemTotal.toFixed(2)}`;
+          selectedList.appendChild(listItem);
+        }
+      });
+
+      const iva = subtotal * ivaRate; // Calcular el IVA
+      const total = subtotal + iva; // Total final con IVA
+
+      // Actualizar el resumen
+      totalElement.innerHTML = `
+        <p>Subtotal: $${subtotal.toFixed(2)}</p>
+        <p>IVA (16%): $${iva.toFixed(2)}</p>
+        <strong>Total: $${total.toFixed(2)}</strong>
+      `;
+    }
+
+    // Enviar detalles de la orden cuando se hace clic en "Comprar Ahora"
+    purchaseButton.addEventListener('click', () => {
+      const orderDetails = {
+        total: parseFloat(totalElement.querySelector('strong').textContent.replace('Total: $', '')),
+        items: []
+      };
+
+      quantities.forEach(quantity => {
+        const price = parseFloat(quantity.dataset.price);
+        const name = quantity.dataset.name;
+        const count = parseInt(quantity.value) || 0;
+
+        if (count > 0) {
+          orderDetails.items.push({ name, count, price, total: price * count });
+        }
+      });
+
+      if (orderDetails.total > 0) {
+        localStorage.setItem('orderDetails', JSON.stringify(orderDetails));
+        window.location.href = 'pagas.html';
+      } else {
+        alert('Por favor selecciona al menos un producto.');
+      }
+    });
+  </script>
+</body>
+</html>
